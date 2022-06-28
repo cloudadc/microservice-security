@@ -1,0 +1,14 @@
+apiVersion: k8s.nginx.org/v1
+kind: Policy
+metadata:
+  name: webgoat-waf-policy
+  namespace: nginx-ingress
+spec:
+  waf:
+    enable: true
+    apPolicy: "webgoat-policy"
+    securityLog:
+      enable: true
+      apLogConf: "logconf-elk"
+      logDest: "syslog:server=syslog-svc.syslog:514"
+
