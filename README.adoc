@@ -1,10 +1,76 @@
 = Microservice Security 101
 :toc: manual
 
-== Install NGINX Ingress Controller with NAP
+== NGINX Ingress Controller
 
+* https://github.com/nginxinc/kubernetes-ingress
 * https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/
 
+For quick deploy, copy link:bash/deploy.sh[bash/deploy.sh] to `kubernetes-ingress/deployments` folder and execute the bash directly.
 
+[source, bash]
+.*Quick Deploy*
+----
+./deploy.sh
+----
+
+[source, bash]
+.*Install Verification*
+----
+$ kubectl get pods -n nginx-ingress --no-headers
+nginx-ingress-68d894666b-jsvsr   1/1   Running   0     11h
+----
+
+== Microservice Security HelloWorld
+
+[source, bash]
+.*1. Deploy syslog*
+----
+kubectl apply -f helloworld/syslog.yaml 
+----
+
+[source, bash]
+.*2. Deploy Microservice App*
+----
+kubectl apply -f helloworld/webgoat.yaml 
+----
+
+[source, bash]
+.*3. Deploy Security Policy*
+----
+kubectl apply -f helloworld/policy.yaml
+----
+
+[source, bash]
+.*4. Deploy APP*
+----
+kubectl apply -f helloworld/vs.yaml
+----
+
+[source, bash]
+.*5. Deploy APP(An Alternative Way)*
+----
+kubectl apply -f helloworld/ingress.yaml 
+----
+
+[source, bash]
+.*6. 访问测试*
+----
+~]# curl "http://microservice-security.101.net:30080/WebGoat/login?<script>" 
+<html>
+  <head>
+    <title>Request Rejected</title>
+  </head>
+  <body>
+    The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 7471558104982133347<br><br><a href='javascript:history.back();'>[Go Back]</a>
+  </body>
+</html>
+----
+
+[source, bash]
+.**
+----
+
+----
 
 

@@ -3,7 +3,7 @@ apiVersion: appprotect.f5.com/v1beta1
 kind: APPolicy
 metadata:
   name: webgoat-policy
-  namespace: nginx-ingress
+  namespace: webgoat
 spec:
   policy:
     name: webgoat-policy-kic
@@ -45,7 +45,7 @@ apiVersion: appprotect.f5.com/v1beta1
 kind: APLogConf
 metadata:
   name: logconf-elk
-  namespace: nginx-ingress
+  namespace: webgoat
 spec:
   filter:
     request_type: illegal
@@ -53,4 +53,17 @@ spec:
     format: default
     max_message_size: 64k
     max_request_size: any
-
+---
+apiVersion: k8s.nginx.org/v1
+kind: Policy
+metadata:
+  name: webgoat-waf-policy
+  namespace: webgoat
+spec:
+  waf:
+    enable: true
+    apPolicy: "webgoat-policy"
+    securityLog:
+      enable: true
+      apLogConf: "logconf-elk"
+      logDest: "syslog:server=syslog-svc.syslog:514"
