@@ -66,4 +66,4 @@ spec:
     securityLog:
       enable: true
       apLogConf: "logconf-elk"
-      logDest: "syslog:server=syslog-svc.syslog:514"
+      logDest: "syslog:server=192.168.200.212:5144"

@@ -6,7 +6,7 @@
 * https://github.com/nginxinc/kubernetes-ingress
 * https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/
 
-For quick deploy, copy link:bash/deploy.sh[bash/deploy.sh] to `kubernetes-ingress/deployments` folder and execute the bash directly.
+For quick deploy, copy link:nic/deploy.sh[deploy.sh] to `kubernetes-ingress/deployments` folder and execute the bash directly.
 
 [source, bash]
 .*Quick Deploy*
@@ -21,40 +21,38 @@ $ kubectl get pods -n nginx-ingress --no-headers
 nginx-ingress-68d894666b-jsvsr   1/1   Running   0     11h
 ----
 
+== ELK
+
+https://github.com/f5devcentral/f5-waf-elk-dashboards
+
 == Microservice Security HelloWorld
 
 [source, bash]
-.*1. Deploy syslog*
-----
-kubectl apply -f helloworld/syslog.yaml 
-----
-
-[source, bash]
-.*2. Deploy Microservice App*
+.*1. Deploy Microservice App*
 ----
 kubectl apply -f helloworld/webgoat.yaml 
 ----
 
 [source, bash]
-.*3. Deploy Security Policy*
+.*2. Deploy Security Policy*
 ----
 kubectl apply -f helloworld/policy.yaml
 ----
 
 [source, bash]
-.*4. Deploy APP*
+.*3. Deploy APP*
 ----
 kubectl apply -f helloworld/vs.yaml
 ----
 
 [source, bash]
-.*5. Deploy APP(An Alternative Way)*
+.*4. Deploy APP(An Alternative Way)*
 ----
 kubectl apply -f helloworld/ingress.yaml 
 ----
 
 [source, bash]
-.*6. 访问测试*
+.*5. Test*
 ----
 ~]# curl "http://microservice-security.101.net:30080/WebGoat/login?<script>" 
 <html>
@@ -68,9 +66,159 @@ kubectl apply -f helloworld/ingress.yaml
 ----
 
 [source, bash]
+.*6. Batch TEST*
+----
+for i in {1..10} ; do for j in $(cat helloworld/ips) ; do curl -H "X-Forwarded-For: $j" "http://microservice-security.101.net:30080/WebGoat/login?<script>" ; echo ; done ; done
+----
+
+ELK 上可以看到攻击的地理位置分布。
+
+[source, bash]
+.*7. Clean up*
+----
+kubectl delete -f helloworld/policy.yaml 
+kubectl delete -f helloworld/vs.yaml
+kubectl delete -f helloworld/ingress.yaml
+kubectl delete -f helloworld/webgoat.yaml 
+----
+
+== Filter by Content
+
+[source, bash]
+.*1. Deploy Microservice App*
+----
+kubectl apply -f filter-by-content/deploy.yaml
+----
+
+[source, bash]
+.*2. Create ELK Log config*
+----
+kubectl apply -f filter-by-content/logconf.yaml
+----
+
+[source, bash]
+.*3. Add Policy*
+----
+kubectl apply -f filter-by-content/uds.yaml 
+kubectl apply -f filter-by-content/policy.yaml 
+----
+
+[source, bash]
+.*4. Deploy Ingress*
+----
+kubectl apply -f filter-by-content/ingress.yaml
+----
+
+[source, bash]
+.*5. TEST*
+----
+$ curl http://microservice-security.101.net:30080/devops/test123
+<html>
+   <head>
+      <title>Request Rejected</title>
+   </head>
+   <body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 9268430331525585681<br><br><a href='javascript:history.back();'>[Go Back]</a></body>
+</html>
+----
+
+[source, bash]
+.*6. Clean up*
+----
+kubectl delete -f filter-by-content/ingress.yaml
+kubectl delete -f filter-by-content/policy.yaml
+kubectl delete -f filter-by-content/uds.yaml 
+kubectl delete -f filter-by-content/logconf.yaml 
+kubectl delete -f filter-by-content/deploy.yaml 
+----
+
+== Illegal Request Method
+
+[source, bash]
+.*1. Deploy Microservice App*
+----
+kubectl apply -f illegal-request-method/deploy.yaml
+----
+
+[source, bash]
+.*2. Add Policy*
+----
+kubectl apply -f illegal-request-method/uds.yaml 
+kubectl apply -f illegal-request-method/policy.yaml
+----
+
+[source, bash]
+.*3. Deploy Ingress*
+----
+kubectl apply -f illegal-request-method/ingress.yaml 
+----
+
+[source, bash]
+.*4. TEST*
+----
+$ curl http://microservice-security.101.net:30080/devops/test -X DELETE
+<html>
+   <head>
+      <title>Request Rejected</title>
+   </head>
+   <body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 9268430331525587211<br><br><a href='javascript:history.back();'>[Go Back]</a></body>
+</html>
+----
+
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f illegal-request-method/ingress.yaml
+kubectl delete -f illegal-request-method/policy.yaml 
+kubectl delete -f illegal-request-method/uds.yaml
+kubectl delete -f illegal-request-method/deploy.yaml 
+----
+
+== XFF Injection
+
+[source, bash]
 .**
 ----
 
 ----
 
+[source, bash]
+.**
+----
 
+----
+
+[source, bash]
+.**
+----
+
+----
+
+[source, bash]
+.**
+----
+
+----
+
+[source, bash]
+.**
+----
+
+----
+
+[source, bash]
+.**
+----
+
+----
+
+[source, bash]
+.**
+----
+
+----
+
+[source, bash]
+.**
+----
+
+----
