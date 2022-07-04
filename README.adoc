@@ -1,7 +1,9 @@
 = Microservice Security 101
 :toc: manual
 
-== NGINX Ingress Controller
+== Prerequisites
+
+=== NGINX Ingress Controller
 
 * https://github.com/nginxinc/kubernetes-ingress
 * https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/
@@ -21,9 +23,18 @@ $ kubectl get pods -n nginx-ingress --no-headers
 nginx-ingress-68d894666b-jsvsr   1/1   Running   0     11h
 ----
 
-== ELK
+=== ELK
 
 https://github.com/f5devcentral/f5-waf-elk-dashboards
+
+=== ELK Log Config
+
+APLogConf used for format the security log that send to ELK, which referenced by Ingress Resource.
+
+[source, bash]
+----
+kubectl apply -f nic/logconf.yaml
+----
 
 == Microservice Security HelloWorld
 
