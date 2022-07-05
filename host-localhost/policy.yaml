@@ -1,0 +1,26 @@
+apiVersion: appprotect.f5.com/v1beta1
+kind: APPolicy
+metadata:
+  name: host-localhost
+  namespace: host-localhost
+spec:
+  policy:
+    signature-requirements:
+    - tag: host-localhost
+    signature-sets: 
+    - name: host-localhost
+      block: true
+      signatureSet: 
+        filter:
+          tagValue: host-localhost
+          tagFilter: eq
+    applicationLanguage: utf-8
+    blocking-settings:
+      violations:
+      - alarm: true
+        block: false
+        name: VIOL_DATA_GUARD
+    enforcementMode: blocking
+    name: host-localhost
+    template:
+      name: POLICY_TEMPLATE_NGINX_BASE

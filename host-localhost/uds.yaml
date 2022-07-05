@@ -1,0 +1,19 @@
+apiVersion: appprotect.f5.com/v1beta1
+kind: APUserSig
+metadata:
+  name: host-localhost-sigs
+  namespace: host-localhost
+spec:
+  signatures:
+  - accuracy: medium
+    attackType:
+      name: Other Application Activity
+    description: Medium accuracy user defined signature with Host localhost
+    name: Host 127.0.0.1
+    risk: medium
+    rule: "re2:\"/host:\\s*((127\\.0\\.0\\.1)|localhost)/\"; nocase;"
+    signatureType: request
+    systems:
+    - name: Microsoft Windows
+    - name: Unix/Linux
+  tag: host-localhost

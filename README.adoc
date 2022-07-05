@@ -226,24 +226,196 @@ kubectl delete -f xff-injection/uds.yaml
 kubectl delete -f xff-injection/deploy.yaml
 ----
 
-== TD
+== Host 127.0.0.1
 
 [source, bash]
-.**
+.*1. Deploy Microservice App*
 ----
-
-----
-
-[source, bash]
-.**
-----
-
+kubectl apply -f host-localhost/deploy.yaml
 ----
 
 [source, bash]
-.**
+.*2. Add Policy*
+----
+kubectl apply -f host-localhost/uds.yaml
+kubectl apply -f host-localhost/policy.yaml
 ----
 
+[source, bash]
+.*3. Deploy Ingress*
+----
+kubectl apply -f host-localhost/ingress.yaml
+----
+
+[source, bash]
+.*4. TEST*
+----
+
+----
+
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f host-localhost/ingress.yaml
+kubectl delete -f host-localhost/policy.yaml
+kubectl delete -f host-localhost/uds.yaml
+kubectl delete -f host-localhost/deploy.yaml
+----
+
+== Illegal Directory Access
+
+[source, bash]
+.*1. Deploy Microservice App*
+----
+kubectl apply -f illegal-directory-access/deploy.yam
+----
+
+[source, bash]
+.*2. Add Policy*
+----
+kubectl apply -f illegal-directory-access/uds.yaml 
+kubectl apply -f illegal-directory-access/policy.yaml 
+----
+
+[source, bash]
+.*3. Deploy Ingress*
+----
+kubectl apply -f illegal-directory-access/ingress.yaml 
+----
+
+[source, bash]
+.*4. TEST*
+----
+
+----
+
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f illegal-directory-access/ingress.yaml
+kubectl delete -f illegal-directory-access/policy.yaml
+kubectl delete -f illegal-directory-access/uds.yaml
+kubectl delete -f illegal-directory-access/deploy.yaml
+----
+
+== Weak Password
+
+[source, bash]
+.*1. Deploy Microservice App*
+----
+kubectl apply -f week-passwd/deploy.yaml
+----
+
+[source, bash]
+.*2. Add Policy*
+----
+kubectl apply -f week-passwd/uds.yaml 
+kubectl apply -f week-passwd/policy.yaml
+----
+
+[source, bash]
+.*3. Deploy Ingress*
+----
+kubectl apply -f week-passwd/ingress.yaml
+----
+
+[source, bash]
+.*4. TEST*
+----
+
+----
+
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f week-passwd/ingress.yaml
+kubectl delete -f week-passwd/policy.yaml
+kubectl delete -f week-passwd/uds.yaml
+kubectl delete -f week-passwd/deploy.yaml
+----
+
+== Illegal File Extension
+
+[source, bash]
+.*1. Deploy Microservice App*
+----
+kubectl apply -f illegal-file-extension/deploy.yaml 
+----
+
+[source, bash]
+.*2. Add Policy*
+----
+kubectl apply -f illegal-file-extension/uds.yaml 
+kubectl apply -f illegal-file-extension/policy.yaml
+----
+
+[source, bash]
+.*3. Deploy Ingress*
+----
+kubectl apply -f illegal-file-extension/ingress.yaml
+----
+
+[source, bash]
+.*4. TEST*
+----
+$ curl "http://microservice-security.101.net:30080/devops/test.db"
+<html>
+   <head>
+      <title>Request Rejected</title>
+   </head>
+   <body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 9268430331525624951<br><br><a href='javascript:history.back();'>[Go Back]</a></body>
+</html>
+----
+
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f illegal-file-extension/ingress.yaml
+kubectl delete -f illegal-file-extension/policy.yaml
+kubectl delete -f illegal-file-extension/uds.yaml
+kubectl delete -f illegal-file-extension/deploy.yaml
+----
+
+== Illegal File Type
+
+[source, bash]
+.*1. Deploy Microservice App*
+----
+kubectl apply -f illegal-file-type/deploy.yaml 
+----
+
+[source, bash]
+.*2. Add Policy*
+----
+kubectl apply -f illegal-file-type/uds.yaml 
+kubectl apply -f illegal-file-type/policy.yaml
+----
+
+[source, bash]
+.*3. Deploy Ingress*
+----
+kubectl apply -f illegal-file-type/ingress.yaml
+----
+
+[source, bash]
+.*4. TEST*
+----
+$ curl "http://microservice-security.101.net:30080/devops/test.php"
+<html>
+   <head>
+      <title>Request Rejected</title>
+   </head>
+   <body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 9268430331525625971<br><br><a href='javascript:history.back();'>[Go Back]</a></body>
+</html>
+----
+
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f illegal-file-type/ingress.yaml
+kubectl delete -f illegal-file-type/policy.yaml
+kubectl delete -f illegal-file-type/uds.yaml
+kubectl delete -f illegal-file-type/deploy.yaml
 ----
 
 [source, bash]
