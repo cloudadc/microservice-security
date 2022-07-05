@@ -36,7 +36,7 @@ APLogConf used for format the security log that send to ELK, which referenced by
 kubectl apply -f nic/logconf.yaml
 ----
 
-== Microservice Security HelloWorld
+== HelloWorld
 
 [source, bash]
 .*1. Deploy Microservice App*
@@ -185,6 +185,48 @@ kubectl delete -f illegal-request-method/deploy.yaml
 ----
 
 == XFF Injection
+
+[source, bash]
+.*1. Deploy Microservice App*
+----
+kubectl apply -f xff-injection/deploy.yaml
+----
+
+[source, bash]
+.*2. Add Policy*
+----
+kubectl apply -f xff-injection/uds.yaml 
+kubectl apply -f xff-injection/policy.yaml 
+----
+
+[source, bash]
+.*3. Deploy Ingress*
+----
+kubectl apply -f xff-injection/ingress.yaml 
+----
+
+[source, bash]
+.*4. TEST*
+----
+$ curl -H "X-Forwarded-For: select * from t where 1 =1 " "http://microservice-security.101.net:30080/devops/test"
+<html>
+   <head>
+      <title>Request Rejected</title>
+   </head>
+   <body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 9268430331525587721<br><br><a href='javascript:history.back();'>[Go Back]</a></body>
+</html>
+----
+
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f xff-injection/ingress.yaml
+kubectl delete -f xff-injection/policy.yaml
+kubectl delete -f xff-injection/uds.yaml
+kubectl delete -f xff-injection/deploy.yaml
+----
+
+== TD
 
 [source, bash]
 .**
