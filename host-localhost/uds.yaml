@@ -9,9 +9,9 @@ spec:
     attackType:
       name: Other Application Activity
     description: Medium accuracy user defined signature with Host localhost
-    name: Host 127.0.0.1
+    name: Host Validation
     risk: medium
-    rule: "re2:\"/host:\\s*((127\\.0\\.0\\.1)|localhost)/\"; nocase;"
+    rule: "re2:\"host:!microservice-security.101.net\"; nocase;"
     signatureType: request
     systems:
     - name: Microsoft Windows

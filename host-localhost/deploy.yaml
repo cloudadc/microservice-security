@@ -41,3 +41,42 @@ spec:
   selector:
     app: app-svc-1-app
   type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-svc-2-app
+  name: app-svc-2-app
+  namespace: host-localhost
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-svc-2-app
+  template:
+    metadata:
+      labels:
+        app: app-svc-2-app
+    spec:
+      containers:
+      - image: cloudadc/cafe:1.0
+        name: backend
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: app-svc-2-app
+  name: app-svc-2
+  namespace: host-localhost
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: app-svc-2-app
+  type: NodePort

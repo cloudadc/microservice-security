@@ -226,7 +226,7 @@ kubectl delete -f xff-injection/uds.yaml
 kubectl delete -f xff-injection/deploy.yaml
 ----
 
-== Host 127.0.0.1
+== Host Validation
 
 [source, bash]
 .*1. Deploy Microservice App*
