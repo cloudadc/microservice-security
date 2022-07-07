@@ -25,7 +25,7 @@ nginx-ingress-68d894666b-jsvsr   1/1   Running   0     11h
 
 === ELK
 
-https://github.com/f5devcentral/f5-waf-elk-dashboards
+* https://github.com/f5devcentral/f5-waf-elk-dashboards
 
 === ELK Log Config
 
@@ -35,6 +35,11 @@ APLogConf used for format the security log that send to ELK, which referenced by
 ----
 kubectl apply -f nic/logconf.yaml
 ----
+
+=== Regular expressions Syntax
+
+* https://github.com/google/re2/wiki/Syntax
+* link:RS2-SYNTAX.adoc[RE2 Regular Expression Syntax Example]
 
 == HelloWorld
 
@@ -226,40 +231,40 @@ kubectl delete -f xff-injection/uds.yaml
 kubectl delete -f xff-injection/deploy.yaml
 ----
 
-== Host Validation
+== Host Localhost
 
 [source, bash]
 .*1. Deploy Microservice App*
 ----
-kubectl apply -f host-localhost/deploy.yaml
+kubectl apply -f host-validation/deploy.yaml
 ----
 
 [source, bash]
 .*2. Add Policy*
 ----
-kubectl apply -f host-localhost/uds.yaml
-kubectl apply -f host-localhost/policy.yaml
+kubectl apply -f host-validation/uds.yaml
+kubectl apply -f host-validation/policy.yaml
 ----
 
 [source, bash]
 .*3. Deploy Ingress*
 ----
-kubectl apply -f host-localhost/ingress.yaml
+kubectl apply -f host-validation/ingress.yaml
 ----
 
 [source, bash]
 .*4. TEST*
 ----
-
+curl -H "Host: localhost" "http://microservice-security.101.net:30080/devops/test"
 ----
 
 [source, bash]
 .*5. Clean up*
 ----
-kubectl delete -f host-localhost/ingress.yaml
-kubectl delete -f host-localhost/policy.yaml
-kubectl delete -f host-localhost/uds.yaml
-kubectl delete -f host-localhost/deploy.yaml
+kubectl delete -f host-validation/ingress.yaml
+kubectl delete -f host-validation/policy.yaml
+kubectl delete -f host-validation/uds.yaml
+kubectl delete -f host-validation/deploy.yaml
 ----
 
 == Illegal Directory Access
@@ -267,7 +272,7 @@ kubectl delete -f host-localhost/deploy.yaml
 [source, bash]
 .*1. Deploy Microservice App*
 ----
-kubectl apply -f illegal-directory-access/deploy.yam
+kubectl apply -f illegal-directory-access/deploy.yaml
 ----
 
 [source, bash]
@@ -286,7 +291,13 @@ kubectl apply -f illegal-directory-access/ingress.yaml
 [source, bash]
 .*4. TEST*
 ----
-
+$ curl http://microservice-security.101.net:30080/devops/uploads/11.jsp
+<html>
+   <head>
+      <title>Request Rejected</title>
+   </head>
+   <body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 9268430331525657081<br><br><a href='javascript:history.back();'>[Go Back]</a></body>
+</html>
 ----
 
 [source, bash]
@@ -322,7 +333,13 @@ kubectl apply -f week-passwd/ingress.yaml
 [source, bash]
 .*4. TEST*
 ----
-
+$ curl "http://microservice-security.101.net:30080/devops?user=admin&password=default"
+<html>
+   <head>
+      <title>Request Rejected</title>
+   </head>
+   <body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 9268430331525648921<br><br><a href='javascript:history.back();'>[Go Back]</a></body>
+</html>
 ----
 
 [source, bash]
@@ -416,6 +433,60 @@ kubectl delete -f illegal-file-type/ingress.yaml
 kubectl delete -f illegal-file-type/policy.yaml
 kubectl delete -f illegal-file-type/uds.yaml
 kubectl delete -f illegal-file-type/deploy.yaml
+----
+
+== Application Admin Access
+
+[source, bash]
+.*1. Deploy Microservice App*
+----
+kubectl apply -f application-admin-access/deploy.yaml 
+----
+
+[source, bash]
+.*2. Add Policy*
+----
+kubectl apply -f application-admin-access/uds.yaml 
+kubectl apply -f application-admin-access/policy.yaml 
+----
+
+[source, bash]
+.*3. Deploy Ingress*
+----
+kubectl apply -f application-admin-access/ingress.yaml
+----
+
+[source, bash]
+.*4. TEST*
+----
+$ curl http://microservice-security.101.net:30080/redis-admin/redis
+<html>
+   <head>
+      <title>Request Rejected</title>
+   </head>
+   <body>The requested URL was rejected. Please consult with your administrator.<br><br>Your support ID is: 17000903267954407182<br><br><a href='javascript:history.back();'>[Go Back]</a></body>
+</html>
+----
+
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f application-admin-access/ingress.yaml
+kubectl delete -f application-admin-access/policy.yaml
+kubectl delete -f application-admin-access/uds.yaml
+kubectl delete -f application-admin-access/deploy.yaml
+----
+
+[source, bash]
+.**
+----
+
+----
+
+[source, bash]
+.**
+----
+
 ----
 
 [source, bash]

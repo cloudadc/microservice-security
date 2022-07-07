@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: host-localhost
+  name: host-validation
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -9,7 +9,7 @@ metadata:
   labels:
     app: app-svc-1-app
   name: app-svc-1-app
-  namespace: host-localhost
+  namespace: host-validation
 spec:
   replicas: 1
   selector:
@@ -32,7 +32,7 @@ metadata:
   labels:
     app: app-svc-1-app
   name: app-svc-1
-  namespace: host-localhost
+  namespace: host-validation
 spec:
   ports:
   - port: 80
@@ -48,7 +48,7 @@ metadata:
   labels:
     app: app-svc-2-app
   name: app-svc-2-app
-  namespace: host-localhost
+  namespace: host-validation
 spec:
   replicas: 1
   selector:
@@ -71,7 +71,7 @@ metadata:
   labels:
     app: app-svc-2-app
   name: app-svc-2
-  namespace: host-localhost
+  namespace: host-validation
 spec:
   ports:
   - port: 80
