@@ -22,6 +22,16 @@ spec:
             name: app-svc-1
             port:
               number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-svc-2-ing
+  namespace: host-validation
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
   - host: microservice-security.201.net
     http:
       paths:

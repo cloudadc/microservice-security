@@ -11,7 +11,7 @@ spec:
     description: Medium accuracy user defined signature with Host localhost
     name: Host Validation
     risk: medium
-    rule: "re2:\"/host:\\s*((127\\.0\\.0\\.1)|localhost)/\"; nocase;"
+    rule: uricontent:"/test"; nocase; objonly;
     signatureType: request
     systems:
     - name: Microsoft Windows

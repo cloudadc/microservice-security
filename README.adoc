@@ -477,34 +477,50 @@ kubectl delete -f application-admin-access/uds.yaml
 kubectl delete -f application-admin-access/deploy.yaml
 ----
 
-[source, bash]
-.**
-----
-
-----
+== DevOps Meetup Demo
 
 [source, bash]
-.**
+.*1. Deploy Microservice App*
 ----
-
+kubectl apply -f foo.yaml 
+kubectl apply -f bar.yaml
 ----
 
 [source, bash]
-.**
+.*2. Add Policy*
 ----
+kubectl apply -f foo-uds.yaml 
+kubectl apply -f foo-policy.yaml 
 
+kubectl apply -f bar-uds.yaml 
+kubectl apply -f bar-policy.yaml 
 ----
 
 [source, bash]
-.**
+.*3. Deploy Ingress*
 ----
-
+kubectl apply -f foo-ingress.yaml 
+kubectl apply -f bar-ingress.yaml
 ----
 
 [source, bash]
-.**
+.*4. TEST*
+----
+./test.sh
 ----
 
+[source, bash]
+.*5. Clean up*
+----
+kubectl delete -f foo-ingress.yaml
+kubectl delete -f foo-policy.yaml 
+kubectl delete -f foo-uds.yaml 
+kubectl delete -f foo.yaml
+
+kubectl delete -f bar-ingress.yaml
+kubectl delete -f bar-policy.yaml 
+kubectl delete -f bar-uds.yaml 
+kubectl delete -f foo.yaml
 ----
 
 [source, bash]

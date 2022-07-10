@@ -11,7 +11,7 @@ metadata:
   name: app-svc-1-app
   namespace: host-validation
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: app-svc-1-app
@@ -50,7 +50,7 @@ metadata:
   name: app-svc-2-app
   namespace: host-validation
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: app-svc-2-app
