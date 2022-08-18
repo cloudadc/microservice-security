@@ -520,7 +520,7 @@ kubectl delete -f foo.yaml
 kubectl delete -f bar-ingress.yaml
 kubectl delete -f bar-policy.yaml 
 kubectl delete -f bar-uds.yaml 
-kubectl delete -f foo.yaml
+kubectl delete -f bar.yaml
 ----
 
 [source, bash]
